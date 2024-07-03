@@ -23,6 +23,27 @@
     <canvas id="glcanvas" tabindex='1'></canvas>
     <!-- Minified and statically hosted version of https://github.com/not-fl3/macroquad/blob/master/js/mq_js_bundle.js -->
     <script src="https://not-fl3.github.io/miniquad-samples/mq_js_bundle.js"></script>
-    <script>load("my-game.wasm");</script> <!-- Your compiled WASM binary -->
+    <script>
+        // Lock screen orientation
+        function lockOrientation() {
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape')
+                    .catch(function(error) {
+                        console.log('Screen orientation lock failed:', error);
+                    });
+            } else if (window.screen.lockOrientation) {
+                window.screen.lockOrientation('landscape');
+            } else if (window.screen.mozLockOrientation) {
+                window.screen.mozLockOrientation('landscape');
+            } else if (window.screen.msLockOrientation) {
+                window.screen.msLockOrientation('landscape');
+            }
+        }
+
+        window.addEventListener('load', function() {
+            lockOrientation();
+            load("my-game.wasm"); // Load your compiled WASM binary
+        });
+    </script>
 </body>
 </html>
